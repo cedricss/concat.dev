@@ -9,9 +9,10 @@ import Url.Parser.Query as Query
 
 
 type Route
-    = ApiDemo
+    = Elm
     | Home
     | NotFound
+    | RxJS
 
 
 parser : Parser (Route -> a) a
@@ -19,7 +20,8 @@ parser =
     oneOf
         [ map Home top
         , map Home (s "index.html")
-        , map ApiDemo (s "demo")
+        , map Elm (s "elm")
+        , map RxJS (s "rxjs")
 
         --  Add more routes like this:
         --  , map Comment (s "user" </> string </> s "comment" </> int)

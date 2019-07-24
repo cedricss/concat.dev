@@ -38,11 +38,22 @@ header items =
                 , href "/"
                 ]
                 [ div
-                    [ class "bg-indigo-600 w-4 h-4 rounded-full mr-2" ]
-                    []
+                    [ class "flex items-center justify-center bg-indigo-600 mr-2"
+                    , class "text-white font-mono"
+                    , class "h-8 w-8 rounded-full"
+                    ]
+                    [ text "[]" ]
                 , p
-                    [ class "font-bold uppercase text-sm text-gray-800" ]
-                    [ text "Hello" ]
+                    [ class "flex items-center"
+                    , class "font-bold uppercase text-sm text-gray-800"
+                    ]
+                    [ text "concat.dev"
+                    , span
+                        [ class "bg-gray-600 rounded-full px-2"
+                        , class "text-xs text-white font-normal lowercase ml-2"
+                        ]
+                        [ text "early preview" ]
+                    ]
                 ]
             , ul
                 [ attribute "data-test" "menu"

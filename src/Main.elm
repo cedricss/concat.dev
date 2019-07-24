@@ -6,7 +6,7 @@ import Css exposing (..)
 import Data
 import Html
 import Html.Styled exposing (..)
-import Html.Styled.Attributes exposing (alt, attribute, class, css, disabled, href, src)
+import Html.Styled.Attributes exposing (alt, attribute, class, css, disabled, href, src, target)
 import Html.Styled.Events exposing (onClick)
 import Http
 import Markdown
@@ -57,11 +57,9 @@ main =
 
 project : { description : String, title : String, url : String }
 project =
-    { title = "Elm Batteries Included!"
+    { title = "concat.dev"
     , description = """
-        Develop Elm apps with Parcel, Netlify, Tailwind CSS and Cypress.
-        Learn how these delightful web technologies work together.
-        Get started with Elm navigation, routes, remote data and JSON decoder
+        Learn Functional Programming. Learn Reactive Programming.
       """
     , url = "https://github.com/cedricss/elm-batteries#elm-batteries-included"
     }
@@ -77,16 +75,17 @@ view model =
 body : Model -> List (Html Msg)
 body model =
     [ View.header
-        [ navIn "Home" "/"
-        , navIn "Demo" "/demo"
-        , navOut "Documentation" "https://concat.dev/elm"
+        [ navIn "RxJS" "/rxjs"
+        , navIn "Elm" "/elm"
         , navOut "Twitter" "https://twitter.com/CedricSoulas"
-        , navOut "Github" "https://github.com/cedricss/elm-batteries"
         ]
     , View.container <|
         case model.route of
-            ApiDemo ->
-                viewDemo model
+            Elm ->
+                viewElm model
+
+            RxJS ->
+                viewRxJS model
 
             Home ->
                 viewHome model
@@ -105,95 +104,111 @@ viewContent content =
 
 viewHome : Model -> List (Html Msg)
 viewHome model =
-    [ h1 [] [ text "Elm Batteries Included" ]
+    [ h1
+        [ class "flex items-center" ]
+        [ text "Coming soon" ]
     , p
-        [ class "max-w-2xl text-xl mb-4" ]
-        [ text project.description ]
+        [ class "bg-gray-200 px-6 py-4 rounded max-w-xl mb-4"
+        , class "text-xl"
+        ]
+        [ a [ href "https://twitter.com/CedricSoulas", target "_blank" ] [ text "Cédric Soulas" ]
+        , text " is teaching Functional Programming and Reactive Programming."
+        ]
     , ul
         [ class "text-xl" ]
-        [ li [] [ a [ href "/demo" ] [ text "Try the demo ›" ] ]
-        , li [] [ a [ href project.url ] [ text "Read the documentation ›" ] ]
+        [ li
+            []
+            [ a
+                [ href "/rxjs" ]
+                [ text "Learn RxJS ›" ]
+            ]
+        , li []
+            [ a
+                [ href "/elm" ]
+                [ text "Learn Elm ›" ]
+            ]
         ]
     ]
 
 
-viewDemo : Model -> List (Html Msg)
-viewDemo model =
-    let
-        content attributes =
-            ul <|
-                [ attribute "data-test" "package"
-                , class "mt-8 flex flex-col justify-center max-w-2xl h-48"
-                , class "bg-transition rounded"
-                , class "pl-10 font-semibold leading-loose"
-                ]
-                    ++ attributes
-
-        item key value =
-            li [] (View.keyValue key value)
-
-        fetchButton =
-            button
-                [ class "w-56"
-                , attribute "data-action" "fetch-package"
-                , onClick UserClickedPackageButton
-                ]
-                [ text "Fetch package.json" ]
-    in
-    [ h1 [] [ text "Demo" ]
-    , h2 [] [ text "Serverless Lambda function on Netlify" ]
-    , p
-        [ class "max-w-xl text-xl mb-8" ]
-        [ text "The demo function has a faux 500ms delay to simulate a slower connection and illustrate the loading state. "
-        , a
-            [ href "https://github.com/cedricss/elm-batteries/blob/master/functions/demo/demo.js#L5" ]
-            [ text "Learn more ›" ]
+viewRxJS : Model -> List (Html Msg)
+viewRxJS model =
+    [ h1 [] [ text "RxJS" ]
+    , h2 [] [ text "Learn Reactive Programming and RxJS" ]
+    , ul
+        [ class "text-xl" ]
+        [ li
+            []
+            [ a
+                [ href "https://reactive.how", target "_blank" ]
+                [ text "reactive.how ›" ]
+            ]
+        , li
+            []
+            [ a
+                [ href "https://reactive.how/rxjs", target "_blank" ]
+                [ text "Launchpad for RxJS ›" ]
+            ]
+        , li
+            []
+            [ a
+                [ href "https://www.humancoders.com/formations/rxjs", target "_blank" ]
+                [ text "RxJS workshop ›" ]
+            ]
         ]
-    , div [] <|
-        case model.package of
-            RemoteData.Success p ->
-                [ fetchButton
-                , content
-                    [ attribute "data-result" "success"
-                    , class "bg-gray-300"
-                    ]
-                    [ item "name" p.name
-                    , item "url" p.url
-                    , item "author" p.author
-                    , item "license" p.license
-                    ]
-                ]
+    ]
 
-            RemoteData.NotAsked ->
-                [ fetchButton
-                , content
-                    [ attribute "data-result" "not-asked"
-                    , class "bg-white"
-                    ]
-                    []
-                ]
 
-            RemoteData.Loading ->
-                [ button
-                    [ class "w-56 cursor-wait"
-                    , disabled True
-                    ]
-                    [ text "Loading..." ]
-                , content
-                    [ attribute "data-result" "loading"
-                    , class "bg-gray-500"
-                    ]
-                    []
-                ]
-
-            RemoteData.Failure _ ->
-                [ fetchButton
-                , content
-                    [ attribute "data-result" "error"
-                    , class "bg-red-500 p-12 text-white text-center"
-                    ]
-                    [ li [] [ text "Oops! Something went wrong..." ] ]
-                ]
+viewElm : Model -> List (Html Msg)
+viewElm model =
+    [ h1 [] [ text "Elm" ]
+    , h2 [] [ text "Learn Functional Programming and Elm" ]
+    , p
+        [ class "my-8 bg-gray-200 px-8 py-6 rounded max-w-lg" ]
+        [ h3
+            [ class "mb-2 max-w-lg" ]
+            [ text "Receive my latest news and tips about Elm" ]
+        , a
+            [ class "btn mb-2"
+            , attribute "data-action" "fetch-package"
+            , href "#"
+            ]
+            [ text "Subscribe to the mailing list  ›" ]
+        , br [] []
+        , text "or follow "
+        , a
+            [ target "_blank"
+            , href "https://twitter.com/CedricSoulas"
+            ]
+            [ text "@CedricSoulas" ]
+        ]
+    , h2
+        [ class "mt-8 max-w-lg" ]
+        [ text "Elm Batteries" ]
+    , p
+        [ class "text-xl" ]
+        [ h3 [] [ text "Elm + Parcel + Netlify + Tailwind CSS + Cypress" ]
+        , a
+            [ href "https://github.com/cedricss/elm-batteries", target "_blank" ]
+            [ text "Generate a project ›"
+            ]
+        ]
+    , h2 [ class "mt-4" ] [ text "Elm workshops" ]
+    , ul
+        [ class "text-xl" ]
+        [ li
+            []
+            [ a
+                [ href "https://www.humancoders.com/formations/elm", target "_blank" ]
+                [ text "Elm ›" ]
+            ]
+        , li
+            []
+            [ a
+                [ href "https://www.humancoders.com/formations/elm-avance", target "_blank" ]
+                [ text "Elm Advanced ›" ]
+            ]
+        ]
     ]
 
 

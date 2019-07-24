@@ -22,8 +22,6 @@ h1 + h2 {
 }
 
 h3 {
-  @apply mt-6;
-  @apply border-t-4 border-gray-300 pt-1;
   @apply font-bold text-xl text-gray-800;
 }
 
@@ -36,7 +34,8 @@ h4 {
   @apply font-semibold text-lg text-gray-800;
 }
 
-button {
+button,
+a.btn {
   @apply bg-indigo-600 rounded shadow;
   @apply border-4 border-transparent;
   @apply px-4 py-2;
@@ -52,7 +51,11 @@ button {
   }
 }
 
-a {
+a.btn {
+  @apply inline-block;
+}
+
+a:not(.btn) {
   @apply text-blue-600 font-semibold;
   &:hover {
     @apply text-blue-800;
